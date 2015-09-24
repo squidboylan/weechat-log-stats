@@ -29,8 +29,6 @@ class graph:
             data.append(thing[1])
             keys.append(thing[0])
 
-        print(keys)
-
         labels = keys
         sizes = data
         colors = ['blue', 'green', 'violet', 'red', 'orange', 'yellow']
@@ -54,10 +52,39 @@ class graph:
                 except:
                     foo[key] = 0
 
-        foo = sorted(foo.items(), key=lambda thing: thing[0], reverse=True)
+        sortedfoo = sorted(foo.items(), key=lambda thing: thing[0], reverse=True)
 
         data = []
         dates = []
+
+        start = sortedfoo[-1][0].split('-')
+        curr = datetime.date(int(start[0]), int(start[1]), int(start[2]))
+
+        end = sortedfoo[0][0].split('-')
+        end = datetime.date(int(end[0]), int(end[1]), int(end[2]))
+
+        while curr < end:
+            year = str(curr.year)
+
+            if curr.month < 10:
+                month = "0" + str(curr.month)
+            else:
+                month = str(curr.month)
+
+            if curr.day < 10:
+                day = "0" + str(curr.day)
+            else:
+                day = str(curr.day)
+
+            try:
+                foo[year + "-" + month + "-" + day]
+
+            except:
+                foo[year + "-" + month + "-" + day] = 0
+
+            curr += datetime.timedelta(days = 1)
+
+        foo = sorted(foo.items(), key=lambda thing: thing[0], reverse=True)
 
         for thing in foo:
             date = thing[0].split('-')
@@ -66,17 +93,19 @@ class graph:
 
             data.append(thing[1])
 
-        months = MonthLocator()  # every month
+        months = MonthLocator()
+        days = DayLocator()
         monthsFmt = DateFormatter('%Y-%m')
 
         fig, ax = plt.subplots()
         ax.plot_date(dates, data, '-')
 
         ax.xaxis.set_major_formatter(monthsFmt)
+        ax.xaxis.set_major_locator(months)
+        ax.xaxis.set_minor_locator(days)
         ax.autoscale_view()
 
         ax.fmt_xdata = DateFormatter('%Y-%m-%d')
-        #ax.fmt_ydata = data
         ax.grid(True)
 
         fig.autofmt_xdate()
@@ -105,8 +134,6 @@ class graph:
         for thing in foo:
             data.append(thing[1])
             keys.append(thing[0])
-
-        print(keys)
 
         labels = keys
         sizes = data
