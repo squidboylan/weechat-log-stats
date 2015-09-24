@@ -39,8 +39,8 @@ class graph:
         plt.legend(patches, labels, loc="best")
         plt.axis('equal')
         plt.tight_layout()
-        plt.show()
-        #plt.savefig(sys.argv[2] + '/user.png')
+        #plt.show()
+        plt.savefig(sys.argv[2] + '/user.png')
 
     def timedata(self):
         foo = {}
@@ -114,8 +114,8 @@ class graph:
         ax.grid(True)
 
         fig.autofmt_xdate()
-        plt.show()
-        #plt.savefig(sys.argv[2] + '/activity.png')
+        #plt.show()
+        plt.savefig(sys.argv[2] + '/activity.png')
 
     def worddata(self):
         foo = {}
@@ -149,8 +149,8 @@ class graph:
         plt.legend(patches, labels, loc="best")
         plt.axis('equal')
         plt.tight_layout()
-        plt.show()
-        #plt.savefig(sys.argv[2] + '/word.png')
+        #plt.show()
+        plt.savefig(sys.argv[2] + '/word.png')
 
     def messagetypedata(self):
         foo = {}
@@ -196,12 +196,27 @@ class graph:
         plt.legend(patches, labels, loc="best")
         plt.axis('equal')
         plt.tight_layout()
-        plt.show()
-        #plt.savefig(sys.argv[2] + '/messagetype.png')
+        #plt.show()
+        plt.savefig(sys.argv[2] + '/messagetype.png')
 
 thing = graph()
 
-thing.userdata()
-thing.worddata()
-thing.timedata()
-thing.messagetypedata()
+try:
+    thing.userdata()
+except:
+    print("failed to create userdata graph from " + sys.argv[1])
+
+try:
+    thing.worddata()
+except:
+    print("failed to create worddata graph from " + sys.argv[1])
+
+try:
+    thing.messagetypedata()
+except:
+    print("failed to create messagetypedata graph from " + sys.argv[1])
+
+try:
+    thing.timedata()
+except:
+    print("failed to create timedata graph from " + sys.argv[1])
