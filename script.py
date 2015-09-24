@@ -14,6 +14,8 @@ class graph:
         for line in open(self.logfile):
             if re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)(@|\+)?([a-z]|[A-Z])+.*", line):
                 key = line.split('\t')[1]
+                key = key.lstrip('@')
+                key = key.lstrip('+')
 
                 try:
                     val = foo[key] + 1
@@ -144,8 +146,54 @@ class graph:
         plt.tight_layout()
         plt.show()
 
+    def messagetypedata(self):
+        foo = {}
+
+        for line in open(self.logfile):
+            if re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)(@|\+)?([a-z]|[A-Z])+.*", line):
+                try:
+                    foo['msg'] += 1
+                except:
+                    foo['msg'] = 0
+
+            elif re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)-->.*", line):
+                try:
+                    foo['join'] += 1
+                except:
+                    foo['join'] = 0
+
+            elif re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)<--.*", line):
+                try:
+                    foo['quit'] += 1
+                except:
+                    foo['quit'] = 0
+
+            elif re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)\*.*", line):
+                try:
+                    foo['action'] += 1
+                except:
+                    foo['action'] = 0
+
+        foo = sorted(foo.items(), key=lambda thing: thing[1], reverse=True)
+        foo = foo[:100]
+        data = []
+        keys = []
+        for thing in foo:
+            data.append(thing[1])
+            keys.append(thing[0])
+
+        labels = keys
+        sizes = data
+        colors = ['blue', 'green', 'violet', 'red', 'orange', 'yellow']
+        patches, texts = plt.pie(sizes, colors=colors, startangle=90)
+        plt.legend(patches, labels, loc="best")
+        plt.axis('equal')
+        plt.tight_layout()
+        plt.show()
+
 thing = graph()
 
 thing.userdata()
 thing.worddata()
 thing.timedata()
+thing.messagetypedata()
