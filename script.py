@@ -12,7 +12,8 @@ class graph:
         foo = {}
 
         for line in open(self.logfile):
-            if re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)(@|\+)?([a-z]|[A-Z])+.*", line):
+            if re.match( "^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)(@|\+)?([a-z]|[A-Z]|-|_)+.*", line) and not\
+                    re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)<?-->?.*", line):
                 key = line.split('\t')[1]
                 key = key.lstrip('@')
                 key = key.lstrip('+')
@@ -39,12 +40,14 @@ class graph:
         plt.axis('equal')
         plt.tight_layout()
         plt.show()
+        #plt.savefig(sys.argv[2] + '/user.png')
 
     def timedata(self):
         foo = {}
 
         for line in open(self.logfile):
-            if re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)(@|\+)?([a-z]|[A-Z])+.*", line):
+            if re.match( "^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)(@|\+)?([a-z]|[A-Z]|-|_)+.*", line) and not\
+                    re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)<?-->?.*", line):
                 key = line.split(' ')[0]
 
                 try:
@@ -112,12 +115,14 @@ class graph:
 
         fig.autofmt_xdate()
         plt.show()
+        #plt.savefig(sys.argv[2] + '/activity.png')
 
     def worddata(self):
         foo = {}
 
         for line in open(self.logfile):
-            if re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)(@|\+)?([a-z]|[A-Z])+.*", line):
+            if re.match( "^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)(@|\+)?([a-z]|[A-Z]|-|_)+.*", line) and not\
+                    re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)<?-->?.*", line):
                 for key in line.split(' ')[2:]:
                     key = key.lower()
                     key = key.replace("\n","")
@@ -145,12 +150,14 @@ class graph:
         plt.axis('equal')
         plt.tight_layout()
         plt.show()
+        #plt.savefig(sys.argv[2] + '/word.png')
 
     def messagetypedata(self):
         foo = {}
 
         for line in open(self.logfile):
-            if re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)(@|\+)?([a-z]|[A-Z])+.*", line):
+            if re.match( "^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)(@|\+)?([a-z]|[A-Z]|-|_)+.*", line) and not\
+                    re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)<?-->?.*", line):
                 try:
                     foo['msg'] += 1
                 except:
@@ -190,6 +197,7 @@ class graph:
         plt.axis('equal')
         plt.tight_layout()
         plt.show()
+        #plt.savefig(sys.argv[2] + '/messagetype.png')
 
 thing = graph()
 
