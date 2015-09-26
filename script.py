@@ -117,6 +117,74 @@ class graph:
         #plt.show()
         plt.savefig(sys.argv[2] + '/activity.png')
 
+    def hourdata(self):
+        foo = {}
+
+        for line in open(self.logfile):
+            if re.match( "^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)(@|\+)?([a-z]|[A-Z]|-|_)+.*", line) and not\
+                    re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\s+|\t+)<?-->?.*", line):
+                key = line.split(' ')[1].split('\t')[0]
+                key = key.split(':')[0]
+
+                try:
+                    val = foo[key] + 1
+                    foo[key] = val
+
+                except:
+                    foo[key] = 0
+
+        sortedfoo = sorted(foo.items(), key=lambda thing: thing[0], reverse=True)
+
+        data = []
+        time = []
+        hourstr = []
+
+        curr = 0
+
+        while curr <= 23:
+
+            if curr < 10:
+                hour = "0" + str(curr)
+
+            else:
+                hour = str(curr)
+
+            try:
+                foo[hour]
+
+            except:
+                foo[hour] = 0
+
+            curr += 1
+
+        foo = sorted(foo.items(), key=lambda thing: thing[0], reverse=True)
+
+        for thing in foo:
+            hour = thing[0]
+            time.append(hour)
+
+            data.append(thing[1])
+
+        for i in time:
+            hourstr.append(str(i))
+
+        fig, ax = plt.subplots()
+        ax.plot(time, data)
+
+        majorLocator = MultipleLocator(1)
+
+        fmt = ScalarFormatter()
+        fmt.set_useOffset(1)
+
+        ax.xaxis.set_major_formatter(fmt)
+        ax.xaxis.set_major_locator(majorLocator)
+        ax.autoscale_view()
+
+        ax.grid(True)
+
+        #plt.show()
+        plt.savefig(sys.argv[2] + '/timeofdayactivity.png')
+
     def worddata(self):
         foo = {}
 
@@ -220,3 +288,8 @@ try:
     thing.timedata()
 except:
     print("failed to create timedata graph from " + sys.argv[1])
+
+try:
+    thing.hourdata()
+except:
+    print("failed to create hourdata graph from " + sys.argv[1])
