@@ -1,3 +1,5 @@
+#!/usr/bin/python2
+
 import sys
 import matplotlib.pyplot as plt
 from pylab import *
@@ -267,29 +269,34 @@ class graph:
         #plt.show()
         plt.savefig(sys.argv[2] + '/messagetype.png')
 
-thing = graph()
+if __name__ == '__main__':
 
-try:
-    thing.userdata()
-except:
-    print("failed to create userdata graph from " + sys.argv[1])
+    if len(sys.argv) < 3:
+        print('Usage: ./script.py LOGFILE OUTPUTDIR')
+    else:
+        thing = graph()
 
-try:
-    thing.worddata()
-except:
-    print("failed to create worddata graph from " + sys.argv[1])
+        try:
+            thing.userdata()
+        except e:
+            print("failed to create userdata graph from " + sys.argv[1] + ': ' + e)
 
-try:
-    thing.messagetypedata()
-except:
-    print("failed to create messagetypedata graph from " + sys.argv[1])
+        try:
+            thing.worddata()
+        except e:
+            print("failed to create worddata graph from " + sys.argv[1] + ': ' + e)
 
-try:
-    thing.timedata()
-except:
-    print("failed to create timedata graph from " + sys.argv[1])
+        try:
+            thing.messagetypedata()
+        except e:
+            print("failed to create messagetypedata graph from " + sys.argv[1] + ': ' + e)
 
-try:
-    thing.hourdata()
-except:
-    print("failed to create hourdata graph from " + sys.argv[1])
+        try:
+            thing.timedata()
+        except e:
+            print("failed to create timedata graph from " + sys.argv[1] + ': ' + e)
+
+        try:
+            thing.hourdata()
+        except e:
+            print("failed to create hourdata graph from " + sys.argv[1] + ': ' + e)
